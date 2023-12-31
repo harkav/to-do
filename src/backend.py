@@ -148,3 +148,5 @@ if args.set_end_date:
 
 con.commit()
 con.close() 
+
+# kvakk
