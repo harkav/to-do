@@ -6,27 +6,31 @@ from prettytable import PrettyTable
 con = sqlite3.connect("to-do.db")
 
 cur = con.cursor()
+
+
 # cur.execute("CREATE TABLE todos(Task, Startdate, Duedate, Enddate)")
-# cur.execute("DROP TABLE todos")
+#cur.execute("DROP TABLE kvakk")
 
 
 HEADERS = ["ID", "Task", "Start date", "Due date", "End date"]
-
-res = cur.execute("SELECT name FROM sqlite_master")
-print(res.fetchone())
 
 
 def create_table(cur: sqlite3.Cursor) -> None:
     cur.execute(
         """
                 CREATE TABLE todos( 
-                    ID INTEGER autoincrement PRIMARY KEY, 
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     task text NOT NULL, 
                     start_date date NOT NULL, 
                     due_date text, 
                     end_date text
                 )"""
     )
+
+
+#create_table(cur)
+res = cur.execute("SELECT name FROM sqlite_master")
+print(res.fetchall())
 
 
 def select_all(cur: sqlite3.Cursor) -> list:
@@ -77,10 +81,6 @@ def add_to_do(
         (task, start_date, due_date, end_date),
     )
     con.commit()
-
-
-res = cur.execute("SELECT name FROM sqlite_master")
-print(res.fetchone())
 
 
 def display_table(data, header):
@@ -144,3 +144,7 @@ if args.set_end_date:
         set_end_date(cur, None, task_id=int(arg_list[0]))
     elif len(arg_list) == 2:
         set_end_date(cur, arg_list[0], int(arg_list[1]))
+
+
+con.commit()
+con.close() 
